@@ -1,75 +1,110 @@
-import React, { useRef } from 'react';
-import './Login.css';
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const Login: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+function Copyright(props: any) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
-  const handleRegisterClick = () => {
-    if (containerRef.current) {
-      containerRef.current.classList.add('active');
-    }
-  };
+// TODO remove, this demo shouldn't need to reset the theme.
+const defaultTheme = createTheme();
 
-  const handleLoginClick = () => {
-    if (containerRef.current) {
-      containerRef.current.classList.remove('active');
-    }
+export default function SignIn() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <div className="container" ref={containerRef} id="container">
-      <div className="form-container sign-up">
-        <form>
-          <h1>Crear Cuenta</h1>
-          <div className="social-icons">
-            <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-youtube"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-facebook"></i></a>
-          </div>
-          <span>o usa tu correo para registrarte</span>
-          <input type="text" placeholder="Nombre" />
-          <input type="email" placeholder="Correo" />
-          <input type="password" placeholder="Contraseña" />
-          <button>Registrarse</button>
-        </form>
-      </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+<Typography component="h1" variant="h5">
+            Iniciar sesión
+          </Typography>
 
-      <div className="form-container sign-in">
-        <form>
-          <h1>Iniciar Sesión</h1>
-          <div className="social-icons">
-            <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-youtube"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-facebook"></i></a>
-          </div>
-          <span>o usa tu correo y contraseña</span>
-          <input type="email" placeholder="Correo" />
-          <input type="password" placeholder="Contraseña" />
-          <a href="#">Olvidaste tu contraseña?</a>
-          <button>Iniciar Sesión</button>
-        </form>
-      </div>
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Dirección de correo electrónico"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Contraseña"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Recuérdame"
 
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
-            <h1>Bienvenido de nuevo</h1>
-            <p>Ingresa tus datos personales para usar la aplicación</p>
-            <button className="hidden" id="login" onClick={handleLoginClick}>Iniciar Sesión</button>
-          </div>
-          <div className="toggle-panel toggle-right">
-            <h1>Hola, Bienvenido!</h1>
-            <p>Registra tu cuenta para usar la aplicación</p>
-            <button className="hidden" id="register" onClick={handleRegisterClick}>Registrarse</button>
-          </div>
-        </div>
-      </div>
-    </div>
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Ingresar
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
   );
-};
-
-export default Login;
+}
