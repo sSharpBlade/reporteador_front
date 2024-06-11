@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Button, Modal, Box, Typography, TextField, Grid, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Button, Modal, Box, Typography, TextField, Grid } from '@mui/material';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 interface AddComponentProps {
-  onAdd: (data: any) => void;
+  onAdd: () => void; // Propiedad de función para llamar después de agregar una nueva conexión
 }
 
 const AddComponent: React.FC<AddComponentProps> = ({ onAdd }) => {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState<any>({});
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setOpen(true);
@@ -24,30 +25,20 @@ const AddComponent: React.FC<AddComponentProps> = ({ onAdd }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAdd = () => {
-    onAdd(formData);
-    handleClose();
+  const handleAdd = async () => {
+    try {
+      await axios.post('http://localhost:3000/servers', formData);
+      onAdd(); // Llamar a la función onAdd para actualizar la lista de conexiones después de agregar una nueva
+      handleClose();
+      navigate('/conexiones'); // Redirigir a la página de conexiones
+    } catch (error) {
+      console.error('Error adding data:', error);
+    }
   };
 
   return (
     <div>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}> {/* Agregar estilos para alinear verticalmente con el botón y agregar margen inferior */}
-        <TextField
-          fullWidth
-          label="Buscar"
-          name="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <IconButton onClick={() => { /* Lógica de búsqueda */ }}>
-                <SearchIcon />
-              </IconButton>
-            ),
-          }}
-        />
-        <Button variant="contained" onClick={handleOpen}>Agregar</Button>
-      </Box>
+      <Button variant="contained" onClick={handleOpen}>Agregar Conexión</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -56,7 +47,7 @@ const AddComponent: React.FC<AddComponentProps> = ({ onAdd }) => {
       >
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Agregar Nuevo Registro
+            Agregar Nueva Conexión
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -67,10 +58,42 @@ const AddComponent: React.FC<AddComponentProps> = ({ onAdd }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-            {/* Agrega más campos según tus necesidades */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="URL"
+                name="url"
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Usuarios"
+                name="users"
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Contraseña"
+                name="password"
+                type="password"
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Tipo"
+                name="type"
+                onChange={handleInputChange}
+              />
+            </Grid>
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}> {/* Estilos para alinear el botón a la derecha y agregar margen superior */}
-            <Button variant="contained" onClick={handleAdd} sx={{ ml: 2 }}>Agregar</Button> {/* Agregamos ml: 2 para agregar un margen izquierdo al botón */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Button variant="contained" onClick={handleAdd} sx={{ ml: 2 }}>Agregar</Button>
           </Box>
         </Box>
       </Modal>

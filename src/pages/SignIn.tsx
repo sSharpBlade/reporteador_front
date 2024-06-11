@@ -21,18 +21,36 @@ function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
-    const password = data.get('password');
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
 
     try {
-      // Simular proceso de inicio de sesión exitoso
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Espera de 1 segundo (simulación de solicitud)
-      localStorage.setItem('token', 'mockToken'); // Simulación de token de sesión
+      const response = await fetch('https://reporteador-back.onrender.com/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-      // Redirigir al Navbar
-      navigate('/usuarios');
+      if (response.ok) {
+        const responseData = await response.json();
+        const token = responseData.token; // Asegúrate de que el token esté aquí
+        
+        localStorage.setItem('token', token); // Almacenar el token en localStorage
+
+        // Redirigir al Navbar o a la página de usuarios
+        navigate('/usuarios');
+      } else {
+        setError('Credenciales inválidas');
+      }
     } catch (error) {
-      setError('Credenciales inválidas');
+      console.error("Error fetching data:", error);
+      setError('Error al iniciar sesión');
     }
   };
 

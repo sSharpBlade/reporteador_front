@@ -11,7 +11,7 @@ const Plantillas = () => {
     <div>
         <h1>Plantillas</h1>
       {/* Agregar lista de plantillas aquí */}
-      <AddComponent onAdd={handleAdd} />
+      
     </div>
   );
 };

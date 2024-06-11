@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../config/axiosConfig';
 import {
   Table,
   TableBody,
@@ -17,28 +17,26 @@ import {
   TextField,
   Button,
   Snackbar,
-  CircularProgress, // Agregar importación para CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import Add from './Add';
-import Search from './Search';
 
-const TableComponent: React.FC = () => {
+const UserTableComponent: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editData, setEditData] = useState({ idServer: '', name: '', url: '', users: '', password: '', type: '' });
+  const [editData, setEditData] = useState({ idUser: '', username: '', email: '', password: '', statusActive: '', roleUsers: '' });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Estado para indicar si se está cargando
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
-      setLoading(true); // Indicar que se está cargando
-      const response = await axios.get('http://localhost:3000/servers');
+      setLoading(true);
+      const response = await axios.get('https://reporteador-back.onrender.com/users');
       setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setLoading(false); // Indicar que se ha terminado la carga
+      setLoading(false);
     }
   };
 
@@ -46,9 +44,9 @@ const TableComponent: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (idServer: string) => {
+  const handleDelete = async (idUser: string) => {
     try {
-      await axios.delete(`http://localhost:3000/servers/${idServer}`);
+      await axios.delete(`https://reporteador-back.onrender.com/users/${idUser}`);
       fetchData();
       setSnackbarOpen(true);
     } catch (error) {
@@ -67,39 +65,36 @@ const TableComponent: React.FC = () => {
 
   const handleEditSave = async () => {
     try {
-      const { idServer, ...dataWithoutId } = editData; // Eliminar idServer del objeto editData
-      await axios.put(`http://localhost:3000/servers/${editData.idServer}`, dataWithoutId); // Enviar el objeto editData sin idServer
+      const { idUser, ...dataWithoutId } = editData;
+      await axios.put(`https://reporteador-back.onrender.com/users/${editData.idUser}`, dataWithoutId);
       fetchData();
       setOpenEdit(false);
     } catch (error) {
       console.error('Error editing data:', error);
     }
   };
-  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  
   return (
     <div>
-      
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>URL</TableCell>
-              <TableCell>Users</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Password</TableCell>
-              <TableCell>Type</TableCell>
+              <TableCell>Status Active</TableCell>
+              <TableCell>Role Users</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading ? ( // Mostrar indicador de carga si se está cargando
+            {loading ? (
               <TableRow>
                 <TableCell colSpan={7} align="center">
                   <CircularProgress />
@@ -107,18 +102,18 @@ const TableComponent: React.FC = () => {
               </TableRow>
             ) : (
               data.map((row: any) => (
-                <TableRow key={row.idServer}>
-                  <TableCell>{row.idServer}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.url}</TableCell>
-                  <TableCell>{row.users}</TableCell>
+                <TableRow key={row.idUser}>
+                  <TableCell>{row.idUser}</TableCell>
+                  <TableCell>{row.username}</TableCell>
+                  <TableCell>{row.email}</TableCell>
                   <TableCell>{row.password}</TableCell>
-                  <TableCell>{row.type}</TableCell>
+                  <TableCell>{row.statusActive.toString()}</TableCell>
+                  <TableCell>{row.roleUsers}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditOpen(row)}>
                       <Edit />
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(row.idServer)}>
+                    <IconButton onClick={() => handleDelete(row.idUser)}>
                       <Delete />
                     </IconButton>
                   </TableCell>
@@ -128,36 +123,27 @@ const TableComponent: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      
 
       <Dialog open={openEdit} onClose={handleEditClose}>
-        <DialogTitle>Edit Server</DialogTitle>
+        <DialogTitle>Edit User</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please edit the server details below:</DialogContentText>
+          <DialogContentText>Please edit the user details below:</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            label="Name"
+            label="Username"
             type="text"
             fullWidth
-            value={editData.name}
-            onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+            value={editData.username}
+            onChange={(e) => setEditData({ ...editData, username: e.target.value })}
           />
           <TextField
             margin="dense"
-            label="URL"
-            type="text"
+            label="Email"
+            type="email"
             fullWidth
-            value={editData.url}
-            onChange={(e) => setEditData({ ...editData, url: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Users"
-            type="text"
-            fullWidth
-            value={editData.users}
-            onChange={(e) => setEditData({ ...editData, users: e.target.value })}
+            value={editData.email}
+            onChange={(e) => setEditData({ ...editData, email: e.target.value })}
           />
           <TextField
             margin="dense"
@@ -169,11 +155,19 @@ const TableComponent: React.FC = () => {
           />
           <TextField
             margin="dense"
-            label="Type"
+            label="Status Active"
             type="text"
             fullWidth
-            value={editData.type}
-            onChange={(e) => setEditData({ ...editData, type: e.target.value })}
+            value={editData.statusActive.toString()}
+            onChange={(e) => setEditData({ ...editData, statusActive: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Role Users"
+            type="text"
+            fullWidth
+            value={editData.roleUsers}
+            onChange={(e) => setEditData({ ...editData, roleUsers: e.target.value })}
           />
         </DialogContent>
         <DialogActions>
@@ -186,11 +180,10 @@ const TableComponent: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        message="Server deleted successfully"
+        message="User deleted successfully"
       />
-      
     </div>
   );
 };
 
-export default TableComponent;
+export default UserTableComponent;
