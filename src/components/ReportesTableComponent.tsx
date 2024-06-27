@@ -4,10 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   InputLabel,
   MenuItem,
   Select,
@@ -118,11 +114,12 @@ const ReportesTableComponent: React.FC = () => {
       </Typography>
 
       <Box display="flex" flexDirection="column" mb={2}>
-        <InputLabel id="database-label">Base de Datos</InputLabel>
+        <InputLabel id="database-label" style={{ color: '#071952' }}>Base de Datos</InputLabel>
         <Select
           labelId="database-label"
           value={selectedDatabase}
           onChange={(event: SelectChangeEvent) => setSelectedDatabase(event.target.value)}
+          style={{ marginBottom: '16px' }}
         >
           {databases.map((db) => (
             <MenuItem key={db.id} value={db.id}>
@@ -133,11 +130,12 @@ const ReportesTableComponent: React.FC = () => {
       </Box>
 
       <Box display="flex" flexDirection="column" mb={2}>
-        <InputLabel id="template-label">Plantilla</InputLabel>
+        <InputLabel id="template-label" style={{ color: '#071952' }}>Plantilla</InputLabel>
         <Select
           labelId="template-label"
           value={selectedTemplate}
           onChange={(event: SelectChangeEvent) => setSelectedTemplate(event.target.value)}
+          style={{ marginBottom: '16px' }}
         >
           {templates.map((template) => (
             <MenuItem key={template.id} value={template.id}>
@@ -155,12 +153,13 @@ const ReportesTableComponent: React.FC = () => {
         fullWidth
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        style={{ marginBottom: '16px' }}
+        style={{ marginBottom: '16px', borderColor: '#088395' }}
+        InputLabelProps={{ style: { color: '#071952' } }}
       />
 
       <Button
         variant="contained"
-        color="primary"
+        style={{  color: '#EBF4F6', marginBottom: '16px' }}
         onClick={handleExecuteQuery}
         disabled={loading}
       >
@@ -170,12 +169,12 @@ const ReportesTableComponent: React.FC = () => {
       {loading && <CircularProgress style={{ marginTop: '16px' }} />}
 
       {results && (
-        <TableContainer component={Paper} style={{ marginTop: '16px' }}>
+        <TableContainer component={Paper} style={{ marginTop: '16px', backgroundColor: '#EBF4F6' }}>
           <Table>
-            <TableHead>
+            <TableHead style={{ backgroundColor: '#088395' }}>
               <TableRow>
                 {results.columns.map((column) => (
-                  <TableCell key={column}>{column}</TableCell>
+                  <TableCell key={column} style={{ color: '#EBF4F6' }}>{column}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
@@ -194,13 +193,13 @@ const ReportesTableComponent: React.FC = () => {
 
       {results && (
         <Box display="flex" justifyContent="space-between" marginTop={2}>
-          <Button variant="contained" color="primary" onClick={() => handleDownload('pdf')}>
+          <Button variant="contained" style={{ backgroundColor: '#071952', color: '#EBF4F6' }} onClick={() => handleDownload('pdf')}>
             Descargar PDF
           </Button>
-          <Button variant="contained" color="primary" onClick={() => handleDownload('excel')}>
+          <Button variant="contained" style={{ backgroundColor: '#071952', color: '#EBF4F6' }} onClick={() => handleDownload('excel')}>
             Descargar Excel
           </Button>
-          <Button variant="contained" color="primary" onClick={() => handleDownload('word')}>
+          <Button variant="contained" style={{ backgroundColor: '#071952', color: '#EBF4F6' }} onClick={() => handleDownload('word')}>
             Descargar Word
           </Button>
         </Box>
