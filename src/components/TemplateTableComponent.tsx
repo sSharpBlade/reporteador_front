@@ -240,6 +240,8 @@ const TemplateTableComponent: React.FC = () => {
             fullWidth
             value={editData.title}
             onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+            error={!editData.title}
+            helperText={!editData.title ? 'El título es requerido' : ''}
           />
           <TextField
             margin="dense"
@@ -248,6 +250,8 @@ const TemplateTableComponent: React.FC = () => {
             fullWidth
             value={editData.description}
             onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+            error={!editData.description}
+            helperText={!editData.description ? 'La descripción es requerida' : ''}
           />
           <input
             accept="image/*"
@@ -269,7 +273,12 @@ const TemplateTableComponent: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose}>Cancelar</Button>
-          <Button onClick={handleEditSave}>Guardar</Button>
+          <Button 
+            onClick={handleEditSave} 
+            disabled={!editData.title || !editData.description}
+          >
+            Guardar
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -313,7 +322,12 @@ const TemplateTableComponent: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAddClose}>Cancelar</Button>
-          <Button onClick={handleAddSave}>Guardar</Button>
+          <Button 
+            onClick={handleAddSave} 
+            disabled={!newTemplateData.title || !newTemplateData.description}
+          >
+            Guardar
+          </Button>
         </DialogActions>
       </Dialog>
 
