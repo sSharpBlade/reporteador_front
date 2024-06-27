@@ -8,7 +8,6 @@ const Usuarios = () => {
 
   return (
     <div>
-      <h1>Usuarios</h1>
       <Box m={3}> {/* Aquí agregas el margen */}
         <TableComponent />
       </Box>

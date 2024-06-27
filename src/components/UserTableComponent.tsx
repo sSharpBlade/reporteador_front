@@ -20,6 +20,7 @@ import {
   CircularProgress,
   Box,
   InputAdornment,
+  Typography
 } from '@mui/material';
 import { Edit, Delete, Search } from '@mui/icons-material';
 
@@ -136,7 +137,12 @@ const UserTableComponent: React.FC = () => {
   
   return (
     <div>
+      <Typography variant="h4" gutterBottom style={{ color: '#071952' }}>
+  Gestión de Usuarios
+</Typography>
+
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        
         <TextField
           label="Buscar usuario"
           variant="outlined"
@@ -157,12 +163,12 @@ const UserTableComponent: React.FC = () => {
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+        <TableHead style={{ backgroundColor: '#088395' }}>
             <TableRow>
-              <TableCell>Username</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Password</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell style={{ color: 'white' }}>Username</TableCell>
+              <TableCell style={{ color: 'white' }}>Email</TableCell>
+              <TableCell style={{ color: 'white' }}>Password</TableCell>
+              <TableCell style={{ color: 'white' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
