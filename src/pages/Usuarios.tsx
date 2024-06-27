@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AddComponent from '../components/AddComponent';
 import TableComponent from '../components/UserTableComponent';
 import axios from '../config/axiosConfig';
+import { Box } from '@mui/material'; // Importa Box de MUI
 
 const Usuarios = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -31,8 +32,9 @@ const Usuarios = () => {
   return (
     <div>
       <h1>Usuarios</h1>
-      
-      <TableComponent   />
+      <Box m={3}> {/* Aquí agregas el margen */}
+        <TableComponent />
+      </Box>
     </div>
   );
 };

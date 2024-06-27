@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuth } from '../context/AuthContext';
 
 const theme = createTheme({
   palette: {
@@ -47,6 +48,7 @@ const theme = createTheme({
 
 function SignIn() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [error, setError] = React.useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -67,10 +69,10 @@ function SignIn() {
 
       if (response.ok) {
         const responseData = await response.json();
-        const token = responseData.token; 
+        const token = responseData.token;
         
-        localStorage.setItem('token', token);
-
+        login(token);
+        
         navigate('/usuarios');
       } else {
         setError('Credenciales inválidas');

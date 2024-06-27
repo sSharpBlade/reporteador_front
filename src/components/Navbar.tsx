@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { PeopleAlt, SettingsEthernet, Description, ExitToApp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuth } from '../context/AuthContext';
 
 const theme = createTheme({
   palette: {
@@ -21,6 +22,7 @@ const theme = createTheme({
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -37,7 +39,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Lógica para cerrar sesión
+    logout(); // Lógica para cerrar sesión
     navigate('/'); // Redirige a la página de inicio de sesión después de cerrar sesión
   };
 

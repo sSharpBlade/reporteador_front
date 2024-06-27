@@ -24,7 +24,7 @@ import { Edit, Delete } from '@mui/icons-material';
 const UserTableComponent: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editData, setEditData] = useState({ idUser: '', username: '', email: '', password: '', statusActive: '', roleUsers: '' });
+  const [editData, setEditData] = useState({ idUser: '', username: '', email: '', password: '' });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -66,7 +66,7 @@ const UserTableComponent: React.FC = () => {
   const handleEditSave = async () => {
     try {
       const { idUser, ...dataWithoutId } = editData;
-      await axios.put(`https://reporteador-back.onrender.com/users/${editData.idUser}`, dataWithoutId);
+      await axios.patch(`https://reporteador-back.onrender.com/users/${editData.idUser}`, dataWithoutId);
       fetchData();
       setOpenEdit(false);
     } catch (error) {
@@ -84,31 +84,25 @@ const UserTableComponent: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Username</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Password</TableCell>
-              <TableCell>Status Active</TableCell>
-              <TableCell>Role Users</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={7} align="center">
+                <TableCell colSpan={4} align="center">
                   <CircularProgress />
                 </TableCell>
               </TableRow>
             ) : (
               data.map((row: any) => (
                 <TableRow key={row.idUser}>
-                  <TableCell>{row.idUser}</TableCell>
                   <TableCell>{row.username}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.password}</TableCell>
-                  <TableCell>{row.statusActive.toString()}</TableCell>
-                  <TableCell>{row.roleUsers}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditOpen(row)}>
                       <Edit />
@@ -152,22 +146,6 @@ const UserTableComponent: React.FC = () => {
             fullWidth
             value={editData.password}
             onChange={(e) => setEditData({ ...editData, password: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Status Active"
-            type="text"
-            fullWidth
-            value={editData.statusActive.toString()}
-            onChange={(e) => setEditData({ ...editData, statusActive: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Role Users"
-            type="text"
-            fullWidth
-            value={editData.roleUsers}
-            onChange={(e) => setEditData({ ...editData, roleUsers: e.target.value })}
           />
         </DialogContent>
         <DialogActions>
