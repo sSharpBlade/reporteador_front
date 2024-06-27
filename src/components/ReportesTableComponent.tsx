@@ -62,8 +62,10 @@ const ReportesTableComponent: React.FC = () => {
       setSnackbarOpen(true);
       return;
     }
-
+  
     setLoading(true);
+    setResults(null); // Limpia los resultados anteriores
+  
     try {
       const response = await axios.post('https://reporteador-back.onrender.com/sql/execute', {
         connectionId: selectedDatabase,
@@ -76,6 +78,7 @@ const ReportesTableComponent: React.FC = () => {
       setLoading(false);
     }
   };
+  
 
   const handleDownload = async (format: string) => {
     if (!selectedDatabase || !query || !selectedTemplate) {
@@ -94,8 +97,9 @@ const ReportesTableComponent: React.FC = () => {
         query: query,
         templateId: selectedTemplate,
       }, { responseType: 'blob' });
-  
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+
+      const blob = response.data;
+      const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
       link.href = url;
       const extension = format === 'word' ? 'docx' : format === 'excel' ? 'xlsx' : format;
@@ -106,7 +110,6 @@ const ReportesTableComponent: React.FC = () => {
       console.error(`Error downloading ${format}:`, error);
     }
   };
-  
 
   return (
     <div>
@@ -203,13 +206,12 @@ const ReportesTableComponent: React.FC = () => {
         </Box>
       )}
 
-<Snackbar
-  open={snackbarOpen}
-  autoHideDuration={6000}
-  onClose={() => setSnackbarOpen(false)}
-  message="Por favor, selecciona una base de datos, escribe una consulta SQL válida y asegúrate de que la consulta genere resultados."
-/>
-
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Por favor, selecciona una base de datos, escribe una consulta SQL válida y asegúrate de que la consulta genere resultados."
+      />
     </div>
   );
 };

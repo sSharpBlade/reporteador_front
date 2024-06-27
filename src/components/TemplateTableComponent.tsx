@@ -131,6 +131,7 @@ const TemplateTableComponent: React.FC = () => {
       // Manejar el error según sea necesario
     }
   };
+
   const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -142,7 +143,7 @@ const TemplateTableComponent: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      setNewTemplateData({ ...newTemplateData, logo: null as any });
+      setNewTemplateData({ ...newTemplateData, logo: '' });
       setNewTemplateLogoPreview(null);
     }
   };
@@ -158,7 +159,7 @@ const TemplateTableComponent: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      setEditData({ ...editData, logo: null as any });
+      setEditData({ ...editData, logo: '' });
       setEditTemplateLogoPreview(null);
     }
   };
