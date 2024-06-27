@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import Usuarios from './pages/Usuarios';
 import Conexiones from './pages/Conexiones';
 import Plantillas from './pages/Plantillas';
+import NotFound from './pages/NotFound'; // Importa el componente NotFound
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -53,6 +54,7 @@ const App = () => {
                 <Route path="/plantillas" element={<Plantillas />} />
               </Route>
             </Route>
+            <Route path="*" element={<NotFound />} /> {/* Ruta de catch-all */}
           </Routes>
         </Router>
       </AuthProvider>
