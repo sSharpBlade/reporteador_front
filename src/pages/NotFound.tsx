@@ -1,5 +1,4 @@
 // src/pages/NotFound.tsx
-import React from 'react';
 import { Typography, Box } from '@mui/material';
 
 const NotFound = () => {
