@@ -1,7 +1,8 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { PeopleAlt, SettingsEthernet, Description, ExitToApp } from '@mui/icons-material';
+import { PeopleAlt, SettingsEthernet, Description, ExitToApp, Inventory2 } from '@mui/icons-material';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAuth } from '../context/AuthContext';
@@ -70,15 +71,19 @@ const Navbar = () => {
         <List sx={{ width: 250 }}>
           <ListItem button onClick={() => handleMenuItemClick('/usuarios')}>
             <ListItemIcon sx={{ color: 'primary.main' }}><PeopleAlt /></ListItemIcon>
-            <ListItemText primary="Crud Usuarios" />
+            <ListItemText primary="Usuarios" />
           </ListItem>
           <ListItem button onClick={() => handleMenuItemClick('/conexiones')}>
             <ListItemIcon sx={{ color: 'primary.main' }}><SettingsEthernet /></ListItemIcon>
-            <ListItemText primary="Crud Conexiones" />
+            <ListItemText primary="Conexiones" />
           </ListItem>
           <ListItem button onClick={() => handleMenuItemClick('/plantillas')}>
             <ListItemIcon sx={{ color: 'primary.main' }}><Description /></ListItemIcon>
-            <ListItemText primary="Crud Plantillas" />
+            <ListItemText primary="Plantillas" />
+          </ListItem>
+          <ListItem button onClick={() => handleMenuItemClick('/reportes')}>
+            <ListItemIcon sx={{ color: 'primary.main' }}><Inventory2 /></ListItemIcon>
+            <ListItemText primary="Reportes" />
           </ListItem>
         </List>
       </Drawer>

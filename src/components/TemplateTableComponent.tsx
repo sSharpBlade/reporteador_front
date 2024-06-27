@@ -76,9 +76,12 @@ const TemplateTableComponent: React.FC = () => {
 
   const handleEditSave = async () => {
     try {
-        const { id, deletedAt, ...dataWithoutId } = editData;
-        await axios.patch(`https://reporteador-back.onrender.com/template/${id}`, dataWithoutId);
-        fetchData();
+      const { id, deletedAt, ...dataWithoutId } = editData;
+      if (dataWithoutId.logo === '') {
+        dataWithoutId.logo = null as any;
+      }
+      await axios.patch(`https://reporteador-back.onrender.com/template/${id}`, dataWithoutId);
+      fetchData();
       setOpenEdit(false);
     } catch (error) {
       console.error('Error editing data:', error);
@@ -113,7 +116,11 @@ const TemplateTableComponent: React.FC = () => {
 
   const handleAddSave = async () => {
     try {
-      const response = await axios.post('https://reporteador-back.onrender.com/template', newTemplateData);
+      const templateData = { ...newTemplateData };
+      if (templateData.logo === '') {
+        templateData.logo = null as any;
+      }
+      const response = await axios.post('https://reporteador-back.onrender.com/template', templateData);
       console.log('Template added successfully:', response.data);
       setNewTemplateData({ title: '', description: '', logo: '' });
       setNewTemplateLogoPreview(null);
@@ -124,7 +131,6 @@ const TemplateTableComponent: React.FC = () => {
       // Manejar el error según sea necesario
     }
   };
-
   const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -135,6 +141,9 @@ const TemplateTableComponent: React.FC = () => {
         setNewTemplateLogoPreview(reader.result as string); // Set the preview URL
       };
       reader.readAsDataURL(file);
+    } else {
+      setNewTemplateData({ ...newTemplateData, logo: null as any });
+      setNewTemplateLogoPreview(null);
     }
   };
 
@@ -148,6 +157,9 @@ const TemplateTableComponent: React.FC = () => {
         setEditTemplateLogoPreview(reader.result as string); // Set the preview URL
       };
       reader.readAsDataURL(file);
+    } else {
+      setEditData({ ...editData, logo: null as any });
+      setEditTemplateLogoPreview(null);
     }
   };
 

@@ -9,6 +9,7 @@ import Plantillas from './pages/Plantillas';
 import NotFound from './pages/NotFound'; // Importa el componente NotFound
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import Reportes from './pages/Reportes';
 
 const theme = createTheme({
   typography: {
@@ -52,6 +53,7 @@ const App = () => {
                 <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/conexiones" element={<Conexiones />} />
                 <Route path="/plantillas" element={<Plantillas />} />
+                <Route path="/reportes" element={<Reportes />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} /> {/* Ruta de catch-all */}
