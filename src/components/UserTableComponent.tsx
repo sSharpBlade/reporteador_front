@@ -29,13 +29,12 @@ const UserTableComponent: React.FC = () => {
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState({ idUser: 0, username: '', email: '', password: '', statusActive: true });
-  const [newUserData, setNewUserData] = useState({ username: '', email: '', password: '', statusActive: true });
+  const [newUserData, setNewUserData] = useState({ idUser: '', username: '', email: '', password: '', statusActive: true });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [openAdd, setOpenAdd] = useState(false);
   const [nextUserId, setNextUserId] = useState(1); // Inicializar con el siguiente idUser disponible
-
 
   const fetchData = async () => {
     try {
@@ -69,9 +68,6 @@ const UserTableComponent: React.FC = () => {
     setOpenEdit(true);
   };
 
-
-
-
   const handleEditClose = () => {
     setOpenEdit(false);
   };
@@ -86,7 +82,6 @@ const UserTableComponent: React.FC = () => {
       console.error('Error editing data:', error);
     }
   };
-  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -116,7 +111,7 @@ const UserTableComponent: React.FC = () => {
 
   const handleAddSave = async () => {
     try {
-      const idUser = nextUserId; // Usa el próximo idUser disponible
+      const idUser = Number(newUserData.idUser); // Usar el idUser ingresado manualmente
       const response = await axios.post('https://reporteador-back.onrender.com/users', {
         idUser,
         username: newUserData.username,
@@ -125,8 +120,7 @@ const UserTableComponent: React.FC = () => {
         statusActive: newUserData.statusActive,
       });
       console.log('User added successfully:', response.data);
-      setNewUserData({ username: '', email: '', password: '', statusActive: true });
-      setNextUserId(prevId => prevId + 1); // Incrementar el contador para el siguiente idUser
+      setNewUserData({ idUser: '', username: '', email: '', password: '', statusActive: true });
       fetchData(); // Actualizar la lista de usuarios después de agregar uno nuevo
       setOpenAdd(false); // Cerrar el diálogo de añadir usuario después de guardar
     } catch (error: any) {
@@ -134,15 +128,14 @@ const UserTableComponent: React.FC = () => {
       // Manejar el error según sea necesario
     }
   };
-  
+
   return (
     <div>
       <Typography variant="h4" gutterBottom style={{ color: '#071952' }}>
-  Gestión de Usuarios
-</Typography>
+        Gestión de Usuarios
+      </Typography>
 
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        
         <TextField
           label="Buscar usuario"
           variant="outlined"
@@ -163,24 +156,26 @@ const UserTableComponent: React.FC = () => {
 
       <TableContainer component={Paper}>
         <Table>
-        <TableHead style={{ backgroundColor: '#088395' }}>
+          <TableHead style={{ backgroundColor: '#088395' }}>
             <TableRow>
-              <TableCell style={{ color: 'white' }}>Username</TableCell>
-              <TableCell style={{ color: 'white' }}>Email</TableCell>
-              <TableCell style={{ color: 'white' }}>Password</TableCell>
-              <TableCell style={{ color: 'white' }}>Actions</TableCell>
+              <TableCell style={{ color: '#EBF4F6' }}>Cédula</TableCell>
+              <TableCell style={{ color: '#EBF4F6' }}>Username</TableCell>
+              <TableCell style={{ color: '#EBF4F6' }}>Email</TableCell>
+              <TableCell style={{ color: '#EBF4F6' }}>Password</TableCell>
+              <TableCell style={{ color: '#EBF4F6' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4} align="center">
+                <TableCell colSpan={5} align="center">
                   <CircularProgress />
                 </TableCell>
               </TableRow>
             ) : (
               filteredData.map((row: any) => (
                 <TableRow key={row.idUser}>
+                  <TableCell>{row.idUser}</TableCell>
                   <TableCell>{row.username}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.password}</TableCell>
@@ -203,6 +198,16 @@ const UserTableComponent: React.FC = () => {
         <DialogTitle>Edit User</DialogTitle>
         <DialogContent>
           <DialogContentText>Please edit the user details below:</DialogContentText>
+          <TextField
+            margin="dense"
+            label="Cédula"
+            type="text"
+            fullWidth
+            value={editData.idUser}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
           <TextField
             autoFocus
             margin="dense"
@@ -241,6 +246,14 @@ const UserTableComponent: React.FC = () => {
           <DialogContentText>Introduce los detalles del nuevo usuario:</DialogContentText>
           <TextField
             autoFocus
+            margin="dense"
+            label="Cédula"
+            type="number"
+            fullWidth
+            value={newUserData.idUser}
+            onChange={(e) => setNewUserData({ ...newUserData, idUser: e.target.value })}
+          />
+          <TextField
             margin="dense"
             label="Username"
             type="text"
