@@ -34,6 +34,7 @@ const UserTableComponent: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [openAdd, setOpenAdd] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const fetchData = async () => {
     try {
@@ -217,25 +218,41 @@ const UserTableComponent: React.FC = () => {
             onChange={(e) => setEditData({ ...editData, username: e.target.value })}
           />
           <TextField
-            margin="dense"
-            label="Email"
-            type="email"
-            fullWidth
-            value={editData.email}
-            onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Password"
-            type="password"
-            fullWidth
-            value={editData.password}
-            onChange={(e) => setEditData({ ...editData, password: e.target.value })}
-          />
+  margin="dense"
+  label="Email"
+  type="email"
+  fullWidth
+  value={editData.email}
+  onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+  error={!emailRegex.test(editData.email)}
+  helperText={!emailRegex.test(editData.email) ? 'Debe ser un email válido' : ''}
+/>
+         <TextField
+  margin="dense"
+  label="Password"
+  type="password"
+  fullWidth
+  value={editData.password}
+  onChange={(e) => setEditData({ ...editData, password: e.target.value })}
+  error={editData.password.length > 0 && editData.password.length < 6}
+  helperText={editData.password.length > 0 && editData.password.length < 6 ? 'La contraseña debe tener al menos 6 caracteres' : ''}
+/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose}>Cancel</Button>
-          <Button onClick={handleEditSave}>Save</Button>
+          <Button 
+    onClick={handleEditSave} 
+    disabled={
+      !editData.username || 
+      editData.username.length < 6 || 
+      !editData.email || 
+      !emailRegex.test(editData.email) || 
+      !editData.password || 
+      editData.password.length < 6
+    }
+  >
+    Save
+  </Button>
         </DialogActions>
       </Dialog>
 
@@ -261,25 +278,42 @@ const UserTableComponent: React.FC = () => {
             onChange={(e) => setNewUserData({ ...newUserData, username: e.target.value })}
           />
           <TextField
-            margin="dense"
-            label="Email"
-            type="email"
-            fullWidth
-            value={newUserData.email}
-            onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
-          />
+  margin="dense"
+  label="Email"
+  type="email"
+  fullWidth
+  value={newUserData.email}
+  onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
+  error={!emailRegex.test(newUserData.email)}
+  helperText={!emailRegex.test(newUserData.email) ? 'Debe ser un email válido' : ''}
+/>
           <TextField
-            margin="dense"
-            label="Password"
-            type="password"
-            fullWidth
-            value={newUserData.password}
-            onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
-          />
+  margin="dense"
+  label="Password"
+  type="password"
+  fullWidth
+  value={newUserData.password}
+  onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
+  error={newUserData.password.length > 0 && newUserData.password.length < 6}
+  helperText={newUserData.password.length > 0 && newUserData.password.length < 6 ? 'La contraseña debe tener al menos 6 caracteres' : ''}
+/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAddClose}>Cancel</Button>
-          <Button onClick={handleAddSave}>Save</Button>
+          <Button 
+    onClick={handleAddSave} 
+    disabled={
+      !newUserData.idUser || 
+      !newUserData.username || 
+      !newUserData.username || 
+      !newUserData.email || 
+      !emailRegex.test(newUserData.email) || 
+      !newUserData.password || 
+      newUserData.password.length < 6
+    }
+  >
+    Save
+  </Button>
         </DialogActions>
       </Dialog>
 
