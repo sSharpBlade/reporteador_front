@@ -198,58 +198,70 @@ const DatabaseTableComponent: React.FC = () => {
         <DialogContent>
           <DialogContentText>Por favor edita los detalles de la conexión a la base de datos:</DialogContentText>
           <TextField
-            margin="dense"
-            label="Tipo"
-            type="text"
-            fullWidth
-            value={editData.type}
-            onChange={(e) => setEditData({ ...editData, type: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Host"
-            type="text"
-            fullWidth
-            value={editData.host}
-            onChange={(e) => setEditData({ ...editData, host: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Puerto"
-            type="number"
-            fullWidth
-            value={editData.port}
-            onChange={(e) => setEditData({ ...editData, port: Number(e.target.value) })}
-          />
-          <TextField
-            margin="dense"
-            label="Usuario"
-            type="text"
-            fullWidth
-            value={editData.username}
-            onChange={(e) => setEditData({ ...editData, username: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Contraseña"
-            type="password"
-            fullWidth
-            value={editData.password}
-            onChange={(e) => setEditData({ ...editData, password: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Base de Datos"
-            type="text"
-            fullWidth
-            value={editData.database}
-            onChange={(e) => setEditData({ ...editData, database: e.target.value })}
-          />
-         <FormControlLabel
+  margin="dense"
+  label="Tipo"
+  type="text"
+  fullWidth
+  value={editData.type}
+  onChange={(e) => setEditData({ ...editData, type: e.target.value })}
+  error={!editData.type}
+  helperText={!editData.type ? 'El tipo es obligatorio' : ''}
+/>
+<TextField
+  margin="dense"
+  label="Host"
+  type="text"
+  fullWidth
+  value={editData.host}
+  onChange={(e) => setEditData({ ...editData, host: e.target.value })}
+  error={!editData.host}
+  helperText={!editData.host ? 'El host es obligatorio' : ''}
+/>
+<TextField
+  margin="dense"
+  label="Puerto"
+  type="number"
+  fullWidth
+  value={editData.port}
+  onChange={(e) => setEditData({ ...editData, port: Number(e.target.value) })}
+  error={!editData.port}
+  helperText={!editData.port ? 'El puerto es obligatorio' : ''}
+/>
+<TextField
+  margin="dense"
+  label="Usuario"
+  type="text"
+  fullWidth
+  value={editData.username}
+  onChange={(e) => setEditData({ ...editData, username: e.target.value })}
+  error={!editData.username}
+  helperText={!editData.username ? 'El usuario es obligatorio' : ''}
+/>
+<TextField
+  margin="dense"
+  label="Contraseña"
+  type="password"
+  fullWidth
+  value={editData.password}
+  onChange={(e) => setEditData({ ...editData, password: e.target.value })}
+  error={!editData.password}
+  helperText={!editData.password ? 'La contraseña es obligatoria' : ''}
+/>
+<TextField
+  margin="dense"
+  label="Base de Datos"
+  type="text"
+  fullWidth
+  value={editData.database}
+  onChange={(e) => setEditData({ ...editData, database: e.target.value })}
+  error={!editData.database}
+  helperText={!editData.database ? 'La base de datos es obligatoria' : ''}
+/>
+<FormControlLabel
   control={
     <Checkbox
-      checked={editData.ssl} // Usar editData en lugar de newDatabaseData
-      onChange={(e) => setEditData({ ...editData, ssl: e.target.checked })} // Actualizar editData en lugar de newDatabaseData
+      checked={editData.ssl}
+      onChange={(e) => setEditData({ ...editData, ssl: e.target.checked })}
     />
   }
   label="SSL"
@@ -258,7 +270,19 @@ const DatabaseTableComponent: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose}>Cancelar</Button>
-          <Button onClick={handleEditSave}>Guardar</Button>
+          <Button 
+    onClick={handleEditSave} 
+    disabled={
+      !editData.type ||
+      !editData.host ||
+      !editData.port ||
+      !editData.username ||
+      !editData.password ||
+      !editData.database
+    }
+  >
+    Guardar
+  </Button>
         </DialogActions>
       </Dialog>
 
@@ -327,7 +351,19 @@ const DatabaseTableComponent: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAddClose}>Cancelar</Button>
-          <Button onClick={handleAddSave}>Guardar</Button>
+          <Button 
+    onClick={handleAddSave} 
+    disabled={
+      !newDatabaseData.type ||
+      !newDatabaseData.host ||
+      !newDatabaseData.port ||
+      !newDatabaseData.username ||
+      !newDatabaseData.password ||
+      !newDatabaseData.database
+    }
+  >
+    Guardar
+  </Button>
         </DialogActions>
       </Dialog>
 
