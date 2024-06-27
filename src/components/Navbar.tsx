@@ -1,8 +1,7 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { PeopleAlt, SettingsEthernet, Description, ExitToApp, Inventory2 } from '@mui/icons-material';
-import Inventory2Icon from '@mui/icons-material/Inventory2';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAuth } from '../context/AuthContext';
@@ -69,6 +68,7 @@ const Navbar = () => {
         onClose={handleDrawerClose}
       >
         <List sx={{ width: 250 }}>
+          <Typography variant="h6" sx={{ margin: 2, color: 'primary.main' }}>Gestión</Typography>
           <ListItem button onClick={() => handleMenuItemClick('/usuarios')}>
             <ListItemIcon sx={{ color: 'primary.main' }}><PeopleAlt /></ListItemIcon>
             <ListItemText primary="Usuarios" />
@@ -81,6 +81,8 @@ const Navbar = () => {
             <ListItemIcon sx={{ color: 'primary.main' }}><Description /></ListItemIcon>
             <ListItemText primary="Plantillas" />
           </ListItem>
+          <Divider />
+          <Typography variant="h6" sx={{ margin: 2, color: 'primary.main' }}>SQL</Typography>
           <ListItem button onClick={() => handleMenuItemClick('/reportes')}>
             <ListItemIcon sx={{ color: 'primary.main' }}><Inventory2 /></ListItemIcon>
             <ListItemText primary="Reportes" />
