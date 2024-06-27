@@ -82,7 +82,12 @@ const ReportesTableComponent: React.FC = () => {
       setSnackbarOpen(true);
       return;
     }
-  
+    
+    if (!results || results.columns.length === 0 || results.rows.length === 0) {
+      setSnackbarOpen(true);
+      return;
+    }
+    
     try {
       const response = await axios.post(`https://reporteador-back.onrender.com/file/${format}`, {
         connectionId: selectedDatabase,
@@ -93,7 +98,6 @@ const ReportesTableComponent: React.FC = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      // Cambiar la extensión a .docx si el formato es 'word' y a .xlsx si el formato es 'excel'
       const extension = format === 'word' ? 'docx' : format === 'excel' ? 'xlsx' : format;
       link.setAttribute('download', `report.${extension}`);
       document.body.appendChild(link);
@@ -102,6 +106,7 @@ const ReportesTableComponent: React.FC = () => {
       console.error(`Error downloading ${format}:`, error);
     }
   };
+  
 
   return (
     <div>
@@ -198,12 +203,13 @@ const ReportesTableComponent: React.FC = () => {
         </Box>
       )}
 
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        message="Por favor, selecciona una base de datos y escribe una consulta SQL."
-      />
+<Snackbar
+  open={snackbarOpen}
+  autoHideDuration={6000}
+  onClose={() => setSnackbarOpen(false)}
+  message="Por favor, selecciona una base de datos, escribe una consulta SQL válida y asegúrate de que la consulta genere resultados."
+/>
+
     </div>
   );
 };
