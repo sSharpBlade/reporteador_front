@@ -34,7 +34,6 @@ const UserTableComponent: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [openAdd, setOpenAdd] = useState(false);
-  const [nextUserId, setNextUserId] = useState(1); // Inicializar con el siguiente idUser disponible
 
   const fetchData = async () => {
     try {
