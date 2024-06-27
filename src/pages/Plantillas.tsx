@@ -1,17 +1,13 @@
 // En la página Plantillas
-import AddComponent from '../components/AddComponent';
+import { Box } from '@mui/material';
+import TemplateTableComponent from '../components/TemplateTableComponent';
 
 const Plantillas = () => {
-  const handleAdd = (data: any) => {
-    // Lógica para agregar la nueva plantilla
-    console.log('Agregando nueva plantilla:', data);
-  };
-
   return (
     <div>
-        <h1>Plantillas</h1>
-      {/* Agregar lista de plantillas aquí */}
-      
+      <Box m={3}>
+        <TemplateTableComponent />
+      </Box>
     </div>
   );
 };
