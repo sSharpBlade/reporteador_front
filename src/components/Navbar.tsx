@@ -3,6 +3,21 @@ import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListIt
 import MenuIcon from '@mui/icons-material/Menu';
 import { PeopleAlt, SettingsEthernet, Description, ExitToApp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#071952',
+    },
+    secondary: {
+      main: '#088395',
+    },
+    background: {
+      default: '#EBF4F6',
+    },
+  },
+});
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -27,8 +42,8 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <AppBar position="static" sx={{ marginBottom: '20px' }}>
+    <ThemeProvider theme={theme}>
+      <AppBar position="static" sx={{ marginBottom: '20px', bgcolor: 'primary.main' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -40,9 +55,9 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Navbar
+            Reporteador
           </Typography>
-          <Button color="inherit" startIcon={<ExitToApp />} onClick={handleLogout}>Cerrar sesión</Button> {/* Botón de cierre de sesión */}
+          <Button color="inherit" startIcon={<ExitToApp />} onClick={handleLogout}>Cerrar sesión</Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -50,22 +65,22 @@ const Navbar = () => {
         open={open}
         onClose={handleDrawerClose}
       >
-        <List>
+        <List sx={{ width: 250 }}>
           <ListItem button onClick={() => handleMenuItemClick('/usuarios')}>
-            <ListItemIcon><PeopleAlt /></ListItemIcon>
+            <ListItemIcon sx={{ color: 'primary.main' }}><PeopleAlt /></ListItemIcon>
             <ListItemText primary="Crud Usuarios" />
           </ListItem>
           <ListItem button onClick={() => handleMenuItemClick('/conexiones')}>
-            <ListItemIcon><SettingsEthernet /></ListItemIcon>
+            <ListItemIcon sx={{ color: 'primary.main' }}><SettingsEthernet /></ListItemIcon>
             <ListItemText primary="Crud Conexiones" />
           </ListItem>
           <ListItem button onClick={() => handleMenuItemClick('/plantillas')}>
-            <ListItemIcon><Description /></ListItemIcon>
+            <ListItemIcon sx={{ color: 'primary.main' }}><Description /></ListItemIcon>
             <ListItemText primary="Crud Plantillas" />
           </ListItem>
         </List>
       </Drawer>
-    </div>
+    </ThemeProvider>
   );
 };
 

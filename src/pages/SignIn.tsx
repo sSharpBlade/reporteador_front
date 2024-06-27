@@ -4,15 +4,46 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#088395',
+    },
+    secondary: {
+      main: '#37B7C3',
+    },
+    background: {
+      default: '#EBF4F6',
+    },
+  },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginBottom: '1rem',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          marginTop: '1.5rem',
+          marginBottom: '1rem',
+          backgroundColor: '#071952',
+          '&:hover': {
+            backgroundColor: '#088395',
+          },
+        },
+      },
+    },
+  },
+});
 
 function SignIn() {
   const navigate = useNavigate();
@@ -31,19 +62,15 @@ function SignIn() {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        const token = responseData.token; // Asegúrate de que el token esté aquí
+        const token = responseData.token; 
         
-        localStorage.setItem('token', token); // Almacenar el token en localStorage
+        localStorage.setItem('token', token);
 
-        // Redirigir al Navbar o a la página de usuarios
         navigate('/usuarios');
       } else {
         setError('Credenciales inválidas');
@@ -55,23 +82,26 @@ function SignIn() {
   };
 
   return (
-    
-    <ThemeProvider theme={createTheme()}>
-      <Container component="main" maxWidth="xs">
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: 'background.default' }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            padding: 3,
+            backgroundColor: 'white',
+            borderRadius: 2,
+            boxShadow: 3,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            border: '1px solid #ccc',
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Iniciar sesión
+          <Typography component="h1" variant="h5" color="primary">
+            Ingresa a tu cuenta
           </Typography>
           {error && (
             <Typography component="p" variant="body2" color="error">
@@ -80,17 +110,15 @@ function SignIn() {
           )}
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              margin="normal"
               required
               fullWidth
               id="email"
-              label="Dirección de correo electrónico"
+              label="Tu usuario"
               name="email"
               autoComplete="email"
               autoFocus
             />
             <TextField
-              margin="normal"
               required
               fullWidth
               name="password"
@@ -99,27 +127,14 @@ function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Recuérdame"
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              color="primary"
             >
-              Ingresar
+              Iniciar sesión
             </Button>
-
-      
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
