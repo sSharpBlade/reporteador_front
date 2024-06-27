@@ -82,18 +82,20 @@ const ReportesTableComponent: React.FC = () => {
       setSnackbarOpen(true);
       return;
     }
-
+  
     try {
       const response = await axios.post(`https://reporteador-back.onrender.com/file/${format}`, {
         connectionId: selectedDatabase,
         query: query,
         templateId: selectedTemplate,
       }, { responseType: 'blob' });
-
+  
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `report.${format}`);
+      // Cambiar la extensión a .docx si el formato es 'word' y a .xlsx si el formato es 'excel'
+      const extension = format === 'word' ? 'docx' : format === 'excel' ? 'xlsx' : format;
+      link.setAttribute('download', `report.${extension}`);
       document.body.appendChild(link);
       link.click();
     } catch (error) {
